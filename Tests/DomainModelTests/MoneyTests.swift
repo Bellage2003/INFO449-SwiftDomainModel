@@ -80,6 +80,11 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.amount == 10)
     XCTAssert(total.currency == "GBP")
   }
+    
+  func testNegativeMoneyAmount() {
+    let total = Money(amount: -100, currency: "USD")
+    XCTAssert(total.amount >= 0)
+  }
 
     static var allTests = [
         ("testCanICreateMoney", testCanICreateMoney),
@@ -96,6 +101,8 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
+        
+        ("testNegativeMoneyAmount", testNegativeMoneyAmount),
     ]
 }
 
