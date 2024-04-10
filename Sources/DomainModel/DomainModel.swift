@@ -67,7 +67,7 @@ public class Job {
     public var title: String
     public var type: JobType
 
-    init(title: String, type: JobType) {
+    public init(title: String, type: JobType) {
         self.title = title
         switch type {
         case .Salary(let amount):
