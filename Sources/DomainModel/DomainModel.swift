@@ -67,9 +67,14 @@ public class Job {
     public var title: String
     public var type: JobType
 
-    public init(title: String, type: JobType) {
+    init(title: String, type: JobType) {
         self.title = title
-        self.type = type
+        switch type {
+        case .Salary(let amount):
+            self.type = .Salary(max(0, amount))
+        case .Hourly(let rate):
+            self.type = .Hourly(max(0.0, rate))
+        }
     }
     
     public enum JobType {

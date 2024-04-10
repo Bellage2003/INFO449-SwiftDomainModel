@@ -81,10 +81,28 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.currency == "GBP")
   }
     
+// New testing cases I add
   func testNegativeMoneyAmount() {
     let total = Money(amount: -100, currency: "USD")
     XCTAssert(total.amount >= 0)
   }
+    
+  func testIllegalCurrency() {
+    let total = Money(amount: 100, currency: "XYZ")
+    let allowedCurrencies = ["USD", "GBP", "EUR", "CAN"]
+    XCTAssert(allowedCurrencies.contains(total.currency))
+  }
+    
+  func testExtremelyHighValue() {
+    let total = Money(amount: Int.max, currency: "USD")
+    XCTAssert(total.amount == Int.max)
+    }
+
+  func testExtremelyLowValue() {
+    let total = Money(amount: Int.min, currency: "USD")
+    XCTAssert(total.amount >= 0)
+    }
+
 
     static var allTests = [
         ("testCanICreateMoney", testCanICreateMoney),
@@ -103,6 +121,9 @@ class MoneyTests: XCTestCase {
         ("testAddUSDtoGBP", testAddUSDtoGBP),
         
         ("testNegativeMoneyAmount", testNegativeMoneyAmount),
+        ("testIllegalCurrency", testIllegalCurrency),
+        ("testExtremelyHighValue", testExtremelyHighValue),
+        ("testExtremelyLowValue", testExtremelyLowValue),
     ]
 }
 

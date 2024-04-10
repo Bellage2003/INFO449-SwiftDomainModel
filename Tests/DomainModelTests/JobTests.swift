@@ -37,11 +37,62 @@ class JobTests: XCTestCase {
         job.raise(byPercent: 1.0) // Nice raise, bruh
         XCTAssert(job.calculateIncome(10) == 320)
     }
+
+// New testing cases I add
+    func testNegativeSalary() {
+        let job = Job(title: "Engineer", type: .Salary(0))
+        XCTAssert(job.calculateIncome() >= 0)
+    }
+    
+    func testNegativeHourlyRate() {
+        let job = Job(title: "Tutor", type: .Hourly(-20.0))
+        switch job.type {
+        case .Hourly(let hourlyRate):
+            XCTAssert(hourlyRate >= 0)
+        default:
+            XCTFail("NegativeHourlyRate handling failed.")
+        }
+    }
+    
+    func testUndefinedJobType() {
+        let job = Job(title: "Mystery Job", type: .Hourly(-1))
+        switch job.type {
+        case .Hourly(let rate):
+            XCTAssert(rate >= 0)
+        default:
+            XCTFail("JobType handling failed.")
+        }
+    }
+    
+    func testExtremePercentageRaise() {
+        let normalJob = Job(title: "Developer", type: .Salary(50000))
+        normalJob.raise(byPercent: 10000) // Applying a 10000% raise
+        switch normalJob.type {
+        case .Salary(let salary):
+            XCTAssert(salary > 50000 && salary < UInt.max)
+        default:
+            XCTFail("JobType handling for extreme percentage raise failed.")
+        }
+
+        let hourlyJob = Job(title: "Consultant", type: .Hourly(50.0))
+        hourlyJob.raise(byPercent: 10000)
+        switch hourlyJob.type {
+        case .Hourly(let rate):
+            XCTAssert(rate > 50.0 && rate < Double(UInt.max))
+        default:
+            XCTFail("JobType handling for extreme percentage raise failed.")
+        }
+    }
+    
   
     static var allTests = [
         ("testCreateSalaryJob", testCreateSalaryJob),
         ("testCreateHourlyJob", testCreateHourlyJob),
         ("testSalariedRaise", testSalariedRaise),
         ("testHourlyRaise", testHourlyRaise),
+        ("testNegativeSalary", testNegativeSalary),
+        ("testNegativeHourlyRate", testNegativeHourlyRate),
+        ("testUndefinedJobType", testUndefinedJobType),
+        ("testExtremePercentageRaise", testExtremePercentageRaise),
     ]
 }
